@@ -1,0 +1,63 @@
+{
+  "generatedBy": "tools/build-assets.mjs",
+  "packs": [
+    {
+      "name": "Kenney · Tiny Dungeon",
+      "url": "https://kenney.nl/assets/tiny-dungeon",
+      "license": "CC0 1.0",
+      "usedFor": "characters, enemies, weapons, items, dungeon props",
+      "frames": "td_*"
+    },
+    {
+      "name": "Kenney · Roguelike/RPG pack",
+      "url": "https://kenney.nl/assets/roguelike-rpg-pack",
+      "license": "CC0 1.0",
+      "usedFor": "ground tiles, decor, pickups",
+      "frames": "rl_*"
+    },
+    {
+      "name": "Kenney · Particle Pack",
+      "url": "https://kenney.nl/assets/particle-pack",
+      "license": "CC0 1.0",
+      "usedFor": "hit sparks, magic, blood and smoke effects",
+      "frames": "pt_*"
+    },
+    {
+      "name": "Kenney · Fantasy UI Borders",
+      "url": "https://kenney.nl/assets/fantasy-ui-borders",
+      "license": "CC0 1.0",
+      "usedFor": "panels and level-up cards (9-slice)",
+      "frames": "ui_*"
+    },
+    {
+      "name": "Kenney · Fonts",
+      "url": "https://kenney.nl/assets/kenney-fonts",
+      "license": "CC0 1.0",
+      "usedFor": "UI typography"
+    },
+    {
+      "name": "Kenney · Digital Audio",
+      "url": "https://kenney.nl/assets/digital-audio",
+      "license": "CC0 1.0",
+      "usedFor": "UI, weapon and pickup SFX"
+    },
+    {
+      "name": "Kenney · Impact Sounds",
+      "url": "https://kenney.nl/assets/impact-sounds",
+      "license": "CC0 1.0",
+      "usedFor": "hit/death SFX"
+    },
+    {
+      "name": "Kenney · Music Jingles",
+      "url": "https://kenney.nl/assets/music-jingles",
+      "license": "CC0 1.0",
+      "usedFor": "level-up fanfare"
+    },
+    {
+      "name": "OpenGameArt · 4 Atmospheric Ghostly Loops (Independent Nu Ljudbank)",
+      "url": "https://opengameart.org/content/4-atmospheric-ghostly-loops",
+      "license": "CC0 1.0",
+      "usedFor": "background music (20s loops, converted to m4a)"
+    }
+  ]
+}
