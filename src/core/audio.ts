@@ -33,6 +33,7 @@ class Audio {
   private musicBufs: AudioBuffer[] = [];
   private musicSrc: AudioBufferSourceNode | null = null;
   private musicTrack = 0;
+  private musicRequested = false;
   private lastPlay = new Map<string, number>();
   sfxVolume = 0.6;
   musicVolume = 0.45;
@@ -55,6 +56,7 @@ class Audio {
     this.musicBus.connect(this.master);
     await this.loadAll();
     this.ready = true;
+    if (this.musicRequested) this.music();
   }
 
   private async decode(url: string) {
@@ -73,6 +75,7 @@ class Audio {
       })());
     }
     await Promise.all(jobs);
+    this.musicBufs = this.musicBufs.filter(Boolean);
   }
 
   sfx(name: string, opts: { vol?: number; rate?: number; spread?: number; minGap?: number } = {}) {
@@ -95,8 +98,9 @@ class Audio {
   }
 
   music(fadeIn = true) {
-    if (!this.ctx || this.musicBufs.length === 0) return;
     this.stopMusic();
+    this.musicRequested = true;
+    if (!this.ctx || !this.ready || this.musicBufs.length === 0) return;
     const buf = this.musicBufs[this.musicTrack % this.musicBufs.length];
     const src = this.ctx.createBufferSource();
     src.buffer = buf;
@@ -110,6 +114,7 @@ class Audio {
   }
 
   stopMusic() {
+    this.musicRequested = false;
     if (this.musicSrc) { try { this.musicSrc.stop(); } catch { /* already stopped */ } this.musicSrc = null; }
   }
 

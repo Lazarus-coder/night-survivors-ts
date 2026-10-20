@@ -125,7 +125,8 @@ function frame(now: number) {
     run.render(ctx);
     ui.setHud(run.hud(fps));
     const track = Math.floor(run.time / 300);
-    if (track !== musicTrack) {
+    // Updating the run may have ended it and stopped the music.
+    if (state === 'run' && track !== musicTrack) {
       if (musicTrack >= 0) audio.nextMusicTrack();
       musicTrack = track;
     }

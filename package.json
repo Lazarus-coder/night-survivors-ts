@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "assets": "node tools/build-assets.mjs",
     "typecheck": "tsc --noEmit",
+    "test": "node --test tools/*.test.mjs",
     "sim": "vite build --ssr tools/sim.ts --outDir .sim --minify false && node .sim/sim.js"
   },
   "devDependencies": {

@@ -9,6 +9,7 @@ npm install
 npm run dev        # http://localhost:5173
 npm run build      # 产物在 dist/
 npm run assets     # 从 assets-src/ 重新生成 public/assets/
+npm test           # 素材路径、音频加载与存档容错回归（使用 mock）
 npm run sim        # 无头回归 + 平衡测试（不需要浏览器）
 ```
 
@@ -22,6 +23,8 @@ npm run preview -- --base=/night-survivors-ts/
 ```
 
 默认预览地址为 [http://localhost:4173/night-survivors-ts/](http://localhost:4173/night-survivors-ts/)（端口以终端输出为准）。现有 `.github/workflows/pages.yml` 已使用这个构建参数；更换部署路径时需同步修改。
+
+Pages workflow 在推送 `main` 时运行回归测试、构建并发布；也可手动触发。仅推送修复分支不会更新线上页面，发布状态可在仓库的 Actions 中查看。
 
 图集、`CREDITS.json` 和音频的运行时请求使用 `import.meta.env.BASE_URL`，HTML/CSS 素材引用由 Vite 自动处理。新增运行时素材请求也应使用部署前缀，避免写死 `/assets/...` 导致子路径下加载失败。
 
@@ -73,7 +76,9 @@ tools/      build-assets.mjs  preview-frames.mjs
 
 ## 自我验证
 
-子路径回归（2026-10-20）：本地生产构建分别挂载到 `/` 与 `/night-survivors-ts/`，在 Chrome 中验证标题页、素材与许可页、开局以及 19 个音效和 3 首音乐的解码。两种路径均通过，无失败请求或运行时异常。这是本次本地浏览器验证，不包含在 `npm run sim` 中；未覆盖线上 Pages 或其他浏览器。
+`npm test` 用 Node 内置测试器、Vite 内存构建和 mock 验证图集与音频的部署前缀、慢加载时的音乐补播与退出取消、缺失曲目处理，以及损坏存档字段的恢复；不访问真实网络或玩家存档。
+
+子路径回归（2026-10-20）：本地生产构建分别挂载到 `/` 与 `/night-survivors-ts/`，在 Chrome 中验证标题页、素材与许可页、开局以及 19 个音效和 3 首音乐的解码。两种路径均通过，无失败请求或运行时异常。此浏览器检查不包含在 `npm test` 或 `npm run sim` 中；发布后仍需在 Pages 地址复查启动与素材请求。
 
 `npm run sim` 用 Vite 的 SSR 打包把游戏逻辑跑在 Node 里，不依赖浏览器与 DOM。整局由**固定种子**驱动，因此同一份代码每次输出完全一致——这是它能当回归基线的前提。
 

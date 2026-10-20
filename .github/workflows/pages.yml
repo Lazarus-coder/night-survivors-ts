@@ -24,6 +24,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm test
+      - run: npm run sim
       - run: npm run build -- --base=/night-survivors-ts/
       - uses: actions/upload-pages-artifact@v3
         with:

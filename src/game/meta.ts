@@ -1,4 +1,6 @@
 // Persistent player profile: currency, meta upgrades, unlocks, records.
+import { META } from '../data/gameData';
+
 export interface SaveData {
   gold: number;
   totalKills: number;
@@ -20,7 +22,28 @@ export function loadSave(): SaveData {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) return defaultSave();
-    return { ...defaultSave(), ...JSON.parse(raw) } as SaveData;
+    const parsed: unknown = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return defaultSave();
+    const data = parsed as Record<string, unknown>;
+    const save = defaultSave();
+    for (const key of ['gold', 'totalKills', 'bestTime', 'runs', 'wins'] as const) {
+      const value = data[key];
+      if (typeof value === 'number' && Number.isFinite(value) && value >= 0) save[key] = value;
+    }
+    if (data.meta && typeof data.meta === 'object' && !Array.isArray(data.meta)) {
+      const levels = data.meta as Record<string, unknown>;
+      for (const upgrade of META) {
+        const level = levels[upgrade.id];
+        if (typeof level === 'number' && Number.isInteger(level) && level >= 0 && level <= upgrade.max) {
+          save.meta[upgrade.id] = level;
+        }
+      }
+    }
+    if (Array.isArray(data.unlocked)) {
+      save.unlocked = [...new Set(['knight', ...data.unlocked.filter(id => typeof id === 'string')])];
+    }
+    if (typeof data.muted === 'boolean') save.muted = data.muted;
+    return save;
   } catch {
     return defaultSave();
   }
