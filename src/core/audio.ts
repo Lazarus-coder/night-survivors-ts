@@ -58,7 +58,7 @@ class Audio {
   }
 
   private async decode(url: string) {
-    const res = await fetch(url);
+    const res = await fetch(import.meta.env.BASE_URL + url.slice(1));
     const ab = await res.arrayBuffer();
     return await this.ctx!.decodeAudioData(ab);
   }

@@ -12,6 +12,19 @@ npm run assets     # 从 assets-src/ 重新生成 public/assets/
 npm run sim        # 无头回归 + 平衡测试（不需要浏览器）
 ```
 
+### 子路径托管（GitHub Pages）
+
+默认构建使用站点根路径 `/`。部署到仓库子路径时，构建和本地预览使用相同的 `base`，依次执行：
+
+```bash
+npm run build -- --base=/night-survivors-ts/
+npm run preview -- --base=/night-survivors-ts/
+```
+
+默认预览地址为 [http://localhost:4173/night-survivors-ts/](http://localhost:4173/night-survivors-ts/)（端口以终端输出为准）。现有 `.github/workflows/pages.yml` 已使用这个构建参数；更换部署路径时需同步修改。
+
+图集、`CREDITS.json` 和音频的运行时请求使用 `import.meta.env.BASE_URL`，HTML/CSS 素材引用由 Vite 自动处理。新增运行时素材请求也应使用部署前缀，避免写死 `/assets/...` 导致子路径下加载失败。
+
 ## 玩法
 
 - 武器全自动开火，玩家只用 **WASD / 方向键 / 手柄左摇杆** 走位。
@@ -59,6 +72,8 @@ tools/      build-assets.mjs  preview-frames.mjs
 平衡性集中在 `src/data/gameData.ts`，改数值不需要碰系统代码。
 
 ## 自我验证
+
+子路径回归（2026-10-20）：本地生产构建分别挂载到 `/` 与 `/night-survivors-ts/`，在 Chrome 中验证标题页、素材与许可页、开局以及 19 个音效和 3 首音乐的解码。两种路径均通过，无失败请求或运行时异常。这是本次本地浏览器验证，不包含在 `npm run sim` 中；未覆盖线上 Pages 或其他浏览器。
 
 `npm run sim` 用 Vite 的 SSR 打包把游戏逻辑跑在 Node 里，不依赖浏览器与 DOM。整局由**固定种子**驱动，因此同一份代码每次输出完全一致——这是它能当回归基线的前提。
 

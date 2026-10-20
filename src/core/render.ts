@@ -6,7 +6,10 @@ const frames: Record<string, Frame> = {};
 let sheet: HTMLCanvasElement | null = null;
 const tintCache = new Map<string, HTMLCanvasElement>();
 
-export async function loadAtlas(url = '/assets/atlas.png', json = '/assets/atlas.json') {
+export async function loadAtlas(
+  url = `${import.meta.env.BASE_URL}assets/atlas.png`,
+  json = `${import.meta.env.BASE_URL}assets/atlas.json`,
+) {
   const [img, meta] = await Promise.all([
     new Promise<HTMLImageElement>((res, rej) => {
       const i = new Image();

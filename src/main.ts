@@ -174,7 +174,7 @@ async function boot() {
       loadAtlas(),
       document.fonts.load("16px 'Kenney Mini'"),
       document.fonts.load("16px 'Kenney Pixel'"),
-      fetch('/assets/CREDITS.json').then(r => r.json()),
+      fetch(`${import.meta.env.BASE_URL}assets/CREDITS.json`).then(r => r.json()),
     ]).then(([, , , c]) => { credits = (c as { packs: typeof credits }).packs; });
   } catch (err) {
     ui.boot('素材加载失败：' + String(err));
