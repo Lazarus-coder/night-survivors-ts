@@ -239,12 +239,14 @@ export class UI {
   private cardChoices: Choice[] = [];
   private onCardPick: ((c: Choice | null) => void) | null = null;
 
-  private pick(i: number) {
-    const c = this.cardChoices[i];
-    if (!c) return;
+  private pick(i: number | null) {
+    const c = i === null ? null : this.cardChoices[i];
+    if (c === undefined) return;
     const cb = this.onCardPick;
     this.onCardPick = null;
     this.cardChoices = [];
+    // The callback can immediately open another pending reward.
+    this.hide();
     cb?.(c);
   }
 
@@ -252,8 +254,8 @@ export class UI {
   cardKeys(index: number | null, confirm: boolean, skip: boolean) {
     if (this.screen !== 'levelup' || this.cardChoices.length === 0) return;
     if (index !== null) { const n = this.cardChoices.length; this.cardIndex = ((index % n) + n) % n; this.highlight(); }
-    if (skip) { const cb = this.onCardPick; this.onCardPick = null; this.cardChoices = []; cb?.(null); }
-    if (confirm) this.pick(this.cardIndex);
+    if (skip) this.pick(null);
+    else if (confirm) this.pick(this.cardIndex);
   }
 
   private highlight() {
